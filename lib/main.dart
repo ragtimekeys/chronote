@@ -16,7 +16,7 @@ void printHello() async {
   late AudioPlayer player;
   player = AudioPlayer();
   final DateTime now = DateTime.now();
-  debugPrint("[$now] Hello, world! function='$printHello'");
+  debugPrint("[$now] Hello, all of the world! function='$printHello'");
   await player.setAsset('assets/moo.mp3');
   player.play();
 }
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
       tz.setLocalLocation(tz.getLocation(currentTimeZone));
 
       var scheduledTime =
-          tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5));
+          tz.TZDateTime.now(tz.local).add(const Duration(minutes: 1));
       await flutterLocalNotificationsPlugin.zonedSchedule(
           0,
           'Chronote chime!',
@@ -128,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime);
     } else if (Platform.isAndroid) {
-      debugPrint('we\'re innn android, queueing a sound for that');
+      debugPrint('we\'re innn them android, queueing a sound for that');
       const int alarmId = 0;
       const String localPath = 'moo.mp3';
 
@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
           */
 
       AndroidAlarmManager.oneShot(
-          const Duration(seconds: 3), alarmId, printHello,
+          const Duration(minutes: 2), alarmId, printHello,
           wakeup: true, alarmClock: true, rescheduleOnReboot: true);
     }
   }

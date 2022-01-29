@@ -10,7 +10,7 @@
 
    <application
         android:label="chronote"
-        android:name="${applicationName}"
+        android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher">
         <!-- Begin alarm manager permissions -->
         <service
