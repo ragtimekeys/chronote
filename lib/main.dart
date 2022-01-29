@@ -4,13 +4,21 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'dart:io' show Platform;
+import 'package:just_audio/just_audio.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-AudioPlayer audioPlayer = AudioPlayer();
+//AudioPlayer audioPlayer = AudioPlayer();
+
+void printHello() async {
+  late AudioPlayer player;
+  player = AudioPlayer();
+  final DateTime now = DateTime.now();
+  debugPrint("[$now] Hello, world! function='$printHello'");
+  await player.setAsset('assets/moo.mp3');
+  player.play();
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +70,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Chronote!'),
+      home: const MyHomePage(title: 'Chronote!!!'),
     );
   }
 }
@@ -86,19 +94,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   void _scheduleNotification() async {
     if (Platform.isIOS) {
       debugPrint('We called scheduleNotification');
@@ -127,11 +122,18 @@ class _MyHomePageState extends State<MyHomePage> {
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime);
     } else if (Platform.isAndroid) {
-      debugPrint('we\'re in android, queueing a sound for that');
+      debugPrint('we\'re innn android, queueing a sound for that');
       const int alarmId = 0;
       const String localPath = 'moo.mp3';
-      AndroidAlarmManager.oneShot(const Duration(seconds: 3), alarmId,
-          () async => {await audioPlayer.play(localPath, isLocal: true)},
+
+      const int helloAlarmID = 0;
+      /*
+      await AndroidAlarmManager.periodic(
+          const Duration(seconds: 5), helloAlarmID, printHello);
+          */
+
+      AndroidAlarmManager.oneShot(
+          const Duration(seconds: 3), alarmId, printHello,
           wakeup: true, alarmClock: true, rescheduleOnReboot: true);
     }
   }
